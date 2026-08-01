@@ -93,6 +93,7 @@
         padding: clamp(1.5rem, 5vw, 5rem);
         display: grid;
         place-items: center;
+        align-content: center;
       }
 
       .hero { position: relative; }
@@ -100,6 +101,7 @@
       .hero-inner,
       .story-inner {
         width: min(100%, 54rem);
+        margin-inline: auto;
         text-align: center;
       }
 
@@ -141,7 +143,7 @@
       }
 
       .intro {
-        min-height: 85svh;
+        min-height: 100svh;
       }
 
       .intro p {
@@ -157,7 +159,10 @@
 
       .show { min-height: 110svh; }
 
-      .show-inner { max-width: 42rem; }
+      .show-inner {
+        width: min(100%, 42rem);
+        margin-inline: auto;
+      }
 
       .eyebrow {
         margin: 0 0 1rem;
