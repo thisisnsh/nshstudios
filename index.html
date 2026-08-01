@@ -513,9 +513,11 @@
 
             vec2 centreOffset = (point - vec2(-0.04, 0.02)) * vec2(0.94, 1.18);
             float centre = exp(-dot(centreOffset, centreOffset) * 2.15);
+            float centreCore = exp(-dot(centreOffset, centreOffset) * 4.2);
             float centreTexture = fbm(point * vec2(2.4, 3.1) + current * 2.8 + vec2(drift * 0.7, -drift * 0.25));
             float centreFog = centre * (0.42 + smoothstep(0.23, 0.78, centreTexture) * 0.58);
-            float opacity = smoke * 0.035 + centreFog * 0.9;
+            // The moving texture can thin out, but the centre never becomes a hollow ring.
+            float opacity = smoke * 0.035 + centreFog * 0.72 + centreCore * 0.46;
             // Keep the soft Chrome falloff while using portable premultiplied output.
             float visualAlpha = opacity * opacity * opacity;
             vec3 colour = mix(vec3(0.7 + smoke * 0.22), vec3(1.0), centreFog * 0.48);
