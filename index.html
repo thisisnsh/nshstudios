@@ -20,9 +20,7 @@
 
       html {
         height: 100%;
-        overflow-y: scroll;
-        scroll-behavior: smooth;
-        scroll-snap-type: y mandatory;
+        overflow: hidden;
       }
 
       body {
@@ -31,13 +29,11 @@
         background: #000;
         color: var(--ink);
         font-family: Arial, Helvetica, sans-serif;
-        overflow-x: hidden;
+        height: 100%;
+        overflow: hidden;
         overscroll-behavior-y: none;
-        scrollbar-width: none;
         touch-action: pan-y;
       }
-
-      body::-webkit-scrollbar { display: none; }
 
       .atmosphere,
       .grain {
@@ -68,7 +64,20 @@
         mix-blend-mode: soft-light;
       }
 
-      main { position: relative; z-index: 2; }
+      main {
+        position: relative;
+        z-index: 2;
+        height: 100svh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        scroll-snap-type: y mandatory;
+        overscroll-behavior-y: none;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      main::-webkit-scrollbar { display: none; }
 
       section {
         height: 100svh;
