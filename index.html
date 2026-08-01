@@ -36,7 +36,8 @@
       }
 
       .atmosphere,
-      .grain {
+      .grain,
+      .icon-stage {
         position: fixed;
         inset: 0;
         pointer-events: none;
@@ -64,10 +65,12 @@
         mix-blend-mode: soft-light;
       }
 
+      .icon-stage { z-index: 1; }
+
       main {
         position: relative;
         z-index: 2;
-        height: 100svh;
+        height: 100dvh;
         overflow-y: auto;
         overflow-x: hidden;
         scroll-behavior: smooth;
@@ -80,8 +83,9 @@
       main::-webkit-scrollbar { display: none; }
 
       section {
-        height: 100svh;
-        min-height: 100svh;
+        height: 100dvh;
+        min-height: 100dvh;
+        margin: 0;
         padding: 0 clamp(1.5rem, 5vw, 5rem);
         display: grid;
         place-items: center;
@@ -95,7 +99,7 @@
       .hero { position: relative; }
 
       .icon-field {
-        position: fixed;
+        position: absolute;
         z-index: 0;
         inset: 0;
         pointer-events: none;
@@ -326,6 +330,7 @@
       <canvas class="smoke-canvas"></canvas>
     </div>
     <div class="grain" aria-hidden="true"></div>
+    <div class="icon-stage" aria-hidden="true"></div>
     <svg width="0" height="0" aria-hidden="true" focusable="false">
       <defs>
         <symbol id="icon-clapboard" viewBox="0 0 100 80"><path fill="currentColor" d="M8 25h84v49H8zm0-4L19 4h84L92 21zM27 4 17 21h12L39 4zm29 0L46 21h12L68 4zm29 0L75 21h12L97 4z" /></symbol>
@@ -561,6 +566,15 @@
         }
       });
 
+      const iconStage = document.querySelector('.icon-stage');
+      const iconFields = new Map();
+      document.querySelectorAll('main > section').forEach((section) => {
+        const field = section.querySelector('.icon-field');
+        if (!field) return;
+        iconFields.set(section, field);
+        iconStage.append(field);
+      });
+
       const observer = new IntersectionObserver(
         (entries) => entries.forEach((entry) => {
           entry.target.classList.toggle('visible', entry.isIntersecting);
@@ -571,7 +585,7 @@
 
       const iconFieldObserver = new IntersectionObserver(
         (entries) => entries.forEach((entry) => {
-          entry.target.querySelector('.icon-field')?.classList.toggle('visible', entry.isIntersecting);
+          iconFields.get(entry.target)?.classList.toggle('visible', entry.isIntersecting);
         }),
         { threshold: 0.5 }
       );
