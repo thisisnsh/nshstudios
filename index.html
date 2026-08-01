@@ -420,7 +420,6 @@
       let activeScene = 0;
       let isChangingScene = false;
       let touchStartY = 0;
-      const sceneScrollDuration = 1350;
 
       const setActiveScene = () => {
         activeScene = scenes.reduce((closest, scene, index) => {
@@ -436,28 +435,8 @@
         if (nextScene === activeScene || isChangingScene) return;
 
         isChangingScene = true;
-        const destination = window.scrollY + scenes[nextScene].getBoundingClientRect().top;
-
-        if (reduceMotion) {
-          window.scrollTo(0, destination);
-          isChangingScene = false;
-          return;
-        }
-
-        const start = window.scrollY;
-        const startTime = performance.now();
-        const easeInOutCubic = (value) => value < 0.5
-          ? 4 * value * value * value
-          : 1 - Math.pow(-2 * value + 2, 3) / 2;
-
-        const animateSceneScroll = (now) => {
-          const elapsed = Math.min((now - startTime) / sceneScrollDuration, 1);
-          window.scrollTo(0, start + (destination - start) * easeInOutCubic(elapsed));
-          if (elapsed < 1) requestAnimationFrame(animateSceneScroll);
-        };
-
-        requestAnimationFrame(animateSceneScroll);
-        window.setTimeout(() => { isChangingScene = false; }, sceneScrollDuration + 100);
+        scenes[nextScene].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        window.setTimeout(() => { isChangingScene = false; }, reduceMotion ? 0 : 850);
       };
 
       window.addEventListener('wheel', (event) => {
