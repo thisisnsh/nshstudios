@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="NSH Studios — alive from a dream. Original stories coming soon."
+    />
+    <title>NSH Studios — Alive From a Dream</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #050505;
+        --paper: #f4f4f2;
+        --muted: rgba(0, 0, 0, 0.62);
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: #000;
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        overflow-x: hidden;
+      }
+
+      .atmosphere,
+      .grain {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .atmosphere {
+        z-index: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(ellipse 28% 22% at 50% 50%, rgba(255, 255, 255, 0.98) 0%, rgba(247, 247, 245, 0.92) 29%, rgba(216, 216, 212, 0.42) 55%, transparent 82%),
+          radial-gradient(ellipse 65% 52% at 50% 50%, rgba(225, 225, 223, 0.16), transparent 72%);
+      }
+
+      .cloud {
+        position: absolute;
+        width: 48vmax;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.74);
+        filter: blur(78px);
+        mix-blend-mode: screen;
+        opacity: 0.44;
+        animation: drift 19s ease-in-out infinite alternate;
+      }
+
+      .cloud:nth-child(1) { left: calc(50% - 34vmax); top: calc(50% - 22vmax); }
+      .cloud:nth-child(2) { left: calc(50% - 9vmax); top: calc(50% - 27vmax); width: 38vmax; opacity: 0.53; animation-duration: 21s; animation-delay: -6s; }
+      .cloud:nth-child(3) { left: calc(50% - 27vmax); top: calc(50% - 3vmax); width: 42vmax; opacity: 0.46; animation-duration: 18s; animation-delay: -11s; }
+      .cloud:nth-child(4) { left: calc(50% - 6vmax); top: calc(50% - 2vmax); width: 32vmax; opacity: 0.5; animation-duration: 14s; animation-delay: -4s; }
+
+      .fog {
+        position: absolute;
+        inset: -15%;
+        width: 130%;
+        height: 130%;
+        opacity: 0.3;
+        mix-blend-mode: screen;
+        animation: fog-shift 26s ease-in-out infinite alternate;
+      }
+
+      .fog--center {
+        opacity: 0.64;
+        mask-image: radial-gradient(ellipse 48% 39% at 50% 50%, #000 4%, rgba(0, 0, 0, 0.84) 35%, transparent 76%);
+        -webkit-mask-image: radial-gradient(ellipse 48% 39% at 50% 50%, #000 4%, rgba(0, 0, 0, 0.84) 35%, transparent 76%);
+        animation-duration: 18s;
+        animation-delay: -8s;
+      }
+
+      .grain {
+        z-index: 1;
+        opacity: 0.15;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
+        mix-blend-mode: soft-light;
+      }
+
+      main { position: relative; z-index: 2; }
+
+      section {
+        min-height: 100svh;
+        padding: clamp(1.5rem, 5vw, 5rem);
+        display: grid;
+        place-items: center;
+      }
+
+      .hero { position: relative; }
+
+      .hero-inner,
+      .story-inner {
+        width: min(100%, 54rem);
+        text-align: center;
+      }
+
+      .hero h1 {
+        margin: 0;
+        color: #000;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(3.8rem, 13vw, 11rem);
+        font-weight: 400;
+        letter-spacing: -0.085em;
+        line-height: 0.78;
+        text-indent: -0.085em;
+        text-wrap: balance;
+        animation: arrive 1.5s cubic-bezier(.2,.8,.2,1) both;
+      }
+
+      .hero .tagline {
+        margin: clamp(1.25rem, 3vw, 2.2rem) 0 0;
+        font-size: clamp(0.63rem, 1.25vw, 0.82rem);
+        font-weight: 600;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        animation: arrive 1.5s .32s cubic-bezier(.2,.8,.2,1) both;
+      }
+
+      .swipe {
+        position: absolute;
+        bottom: clamp(1.5rem, 4vw, 3rem);
+        left: 50%;
+        margin: 0;
+        transform: translateX(-50%);
+        color: rgba(0, 0, 0, 0.86);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        animation: breathe 2.8s ease-in-out infinite;
+      }
+
+      .intro {
+        min-height: 85svh;
+      }
+
+      .intro p {
+        max-width: 28rem;
+        margin: 0;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(2.1rem, 6vw, 5.5rem);
+        font-weight: 400;
+        line-height: 0.94;
+        letter-spacing: -0.065em;
+        text-wrap: balance;
+      }
+
+      .show { min-height: 110svh; }
+
+      .show-inner { max-width: 42rem; }
+
+      .eyebrow {
+        margin: 0 0 1rem;
+        font-size: clamp(0.58rem, 1vw, 0.72rem);
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .show h2 {
+        margin: 0;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(4.3rem, 14vw, 12rem);
+        font-weight: 400;
+        line-height: 0.75;
+        letter-spacing: -0.1em;
+        text-indent: -0.1em;
+        text-wrap: balance;
+      }
+
+      .show p:not(.eyebrow) {
+        max-width: 30rem;
+        margin: clamp(1.75rem, 5vw, 3.5rem) 0 0;
+        font-size: clamp(1rem, 2.1vw, 1.45rem);
+        font-weight: 500;
+        line-height: 1.35;
+        letter-spacing: -0.035em;
+      }
+
+      .show-inner, .intro .story-inner {
+        opacity: 0.12;
+        transform: translateY(3rem);
+        transition: opacity 1.15s ease, transform 1.15s cubic-bezier(.2,.8,.2,1);
+      }
+
+      .show-inner.visible, .intro .story-inner.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .closing { min-height: 75svh; }
+
+      .closing p {
+        margin: 0;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(2.7rem, 8vw, 7rem);
+        font-weight: 400;
+        line-height: 0.85;
+        letter-spacing: -0.075em;
+      }
+
+      @keyframes drift {
+        from { transform: translate3d(-6%, -4%, 0) scale(0.84); }
+        to { transform: translate3d(8%, 7%, 0) scale(1.14); }
+      }
+
+      @keyframes fog-shift {
+        from { transform: translate3d(-3%, -2%, 0) scale(1.02) rotate(-2deg); }
+        to { transform: translate3d(4%, 3%, 0) scale(1.12) rotate(2deg); }
+      }
+
+      @keyframes arrive {
+        from { opacity: 0; transform: translateY(1.5rem); filter: blur(10px); }
+        to { opacity: 1; transform: translateY(0); filter: blur(0); }
+      }
+
+      @keyframes breathe {
+        0%, 100% { transform: translate(-50%, 0); opacity: 0.38; }
+        50% { transform: translate(-50%, -0.6rem); opacity: 1; }
+      }
+
+      @media (max-width: 600px) {
+        .atmosphere {
+          background:
+            radial-gradient(ellipse 65% 24% at 50% 50%, rgba(255, 255, 255, 0.98) 0%, rgba(247, 247, 245, 0.9) 28%, rgba(230, 230, 228, 0.46) 55%, transparent 78%),
+            radial-gradient(ellipse 105% 42% at 50% 50%, rgba(225, 225, 223, 0.2), transparent 70%);
+        }
+        .cloud { filter: blur(50px); }
+        .fog--center {
+          mask-image: radial-gradient(ellipse 90% 34% at 50% 50%, #000 4%, rgba(0, 0, 0, 0.84) 35%, transparent 76%);
+          -webkit-mask-image: radial-gradient(ellipse 90% 34% at 50% 50%, #000 4%, rgba(0, 0, 0, 0.84) 35%, transparent 76%);
+        }
+        .show { min-height: 100svh; }
+        .show h2 { font-size: clamp(4rem, 20vw, 7rem); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true">
+      <i class="cloud"></i><i class="cloud"></i><i class="cloud"></i><i class="cloud"></i>
+      <svg class="fog fog--wide" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <defs>
+          <filter id="fog-noise-wide" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.006 0.024" numOctaves="3" seed="8" result="noise">
+              <animate attributeName="baseFrequency" dur="22s" values="0.006 0.024;0.011 0.036;0.008 0.019;0.006 0.024" repeatCount="indefinite" />
+            </feTurbulence>
+            <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.8 0.25 0.15 0 -0.54" />
+            <feGaussianBlur stdDeviation="7" />
+          </filter>
+        </defs>
+        <rect width="1000" height="1000" filter="url(#fog-noise-wide)" />
+      </svg>
+      <svg class="fog fog--center" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <defs>
+          <filter id="fog-noise-center" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.014 0.042" numOctaves="4" seed="23" result="noise">
+              <animate attributeName="baseFrequency" dur="14s" values="0.014 0.042;0.022 0.028;0.01 0.052;0.014 0.042" repeatCount="indefinite" />
+            </feTurbulence>
+            <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.7 0.35 0.2 0 -0.55" />
+            <feGaussianBlur stdDeviation="5" />
+          </filter>
+        </defs>
+        <rect width="1000" height="1000" filter="url(#fog-noise-center)" />
+      </svg>
+    </div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <main>
+      <section class="hero" aria-labelledby="studio-name">
+        <div class="hero-inner">
+          <h1 id="studio-name">NSH Studios</h1>
+          <p class="tagline">Alive from a dream</p>
+        </div>
+        <p class="swipe">Swipe up</p>
+      </section>
+
+      <section class="intro">
+        <div class="story-inner">
+          <p>We make the imagined feel alive.</p>
+        </div>
+      </section>
+
+      <section class="show" aria-labelledby="daily-thing">
+        <div class="show-inner">
+          <p class="eyebrow">Launching Q3 2026</p>
+          <h2 id="daily-thing">Daily Thing</h2>
+          <p>A boy lives an ordinary life, until the small, strange moments inside every day begin to ask for his attention.</p>
+        </div>
+      </section>
+
+      <section class="show" aria-labelledby="fluffy">
+        <div class="show-inner">
+          <p class="eyebrow">Launching Q4 2026</p>
+          <h2 id="fluffy">Fluffy</h2>
+          <p>Five friends and a dog share a quiet neighbourhood—until the familiar streets begin to reveal a world that is anything but quiet.</p>
+        </div>
+      </section>
+
+      <section class="show" aria-labelledby="love-lines">
+        <div class="show-inner">
+          <p class="eyebrow">Launching 2027</p>
+          <h2 id="love-lines">Love Lines</h2>
+          <p>A love story that reaches beyond the lines science has drawn, where connection finds its own impossible path.</p>
+        </div>
+      </section>
+
+      <section class="closing">
+        <div class="story-inner">
+          <p>More dreams<br />are on their way.</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        }),
+        { threshold: 0.25 }
+      );
+      document.querySelectorAll('.show-inner, .story-inner').forEach((element) => observer.observe(element));
+    </script>
+  </body>
+</html>
