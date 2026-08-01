@@ -70,6 +70,7 @@
       main {
         position: relative;
         z-index: 2;
+        height: 100svh;
         height: 100dvh;
         overflow-y: auto;
         overflow-x: hidden;
@@ -83,13 +84,15 @@
       main::-webkit-scrollbar { display: none; }
 
       section {
+        height: 100svh;
         height: 100dvh;
+        min-height: 100svh;
         min-height: 100dvh;
         margin: 0;
         padding: 0 clamp(1.5rem, 5vw, 5rem);
-        display: grid;
-        place-items: center;
-        align-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         scroll-snap-align: start;
         scroll-snap-stop: always;
         position: relative;
