@@ -98,23 +98,22 @@
         position: absolute;
         z-index: 0;
         inset: 0;
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        grid-template-rows: repeat(9, 1fr);
-        place-items: center;
-        padding: clamp(1rem, 3vw, 3rem);
         pointer-events: none;
         mask-image: radial-gradient(ellipse 37% 34% at 50% 50%, transparent 0 52%, rgba(0, 0, 0, 0.28) 68%, #000 88%);
         -webkit-mask-image: radial-gradient(ellipse 37% 34% at 50% 50%, transparent 0 52%, rgba(0, 0, 0, 0.28) 68%, #000 88%);
       }
 
       .field-icon {
+        position: absolute;
+        top: var(--icon-y);
+        left: var(--icon-x);
         width: clamp(1.1rem, 2vw, 2.1rem);
         height: clamp(1.1rem, 2vw, 2.1rem);
         color: rgba(255, 255, 255, 0.7);
-        opacity: 0.34;
+        opacity: var(--icon-opacity);
         filter: drop-shadow(0 0 0.45rem rgba(255, 255, 255, 0.38));
         mix-blend-mode: screen;
+        transform: translate(-50%, -50%) scale(var(--icon-scale));
       }
 
       .hero-inner,
@@ -510,6 +509,10 @@
           const iconUse = document.createElementNS(svgNamespace, 'use');
           iconSvg.setAttribute('class', 'field-icon');
           iconSvg.setAttribute('viewBox', '0 0 100 80');
+          iconSvg.style.setProperty('--icon-x', `${(Math.random() * 100).toFixed(2)}%`);
+          iconSvg.style.setProperty('--icon-y', `${(Math.random() * 100).toFixed(2)}%`);
+          iconSvg.style.setProperty('--icon-scale', (0.65 + Math.random() * 0.7).toFixed(2));
+          iconSvg.style.setProperty('--icon-opacity', (0.16 + Math.random() * 0.28).toFixed(2));
           iconUse.setAttribute('href', icon);
           iconUse.setAttribute('width', '100');
           iconUse.setAttribute('height', '80');
