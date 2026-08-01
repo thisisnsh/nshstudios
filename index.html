@@ -533,7 +533,7 @@
             let animationStart;
             const render = (now) => {
               if (animationStart === undefined) animationStart = now;
-              const elapsed = (now - animationStart) * 0.001;
+              const elapsed = 30 + (now - animationStart) * 0.001;
               gl.clearColor(0, 0, 0, 0);
               gl.clear(gl.COLOR_BUFFER_BIT);
               gl.uniform2f(resolution, smokeCanvas.width, smokeCanvas.height);
