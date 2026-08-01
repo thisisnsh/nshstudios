@@ -18,7 +18,10 @@
 
       * { box-sizing: border-box; }
 
-      html { scroll-behavior: smooth; }
+      html {
+        scroll-behavior: smooth;
+        scroll-snap-type: y mandatory;
+      }
 
       body {
         margin: 0;
@@ -94,6 +97,8 @@
         display: grid;
         place-items: center;
         align-content: center;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
       }
 
       .hero { position: relative; }
@@ -113,7 +118,7 @@
         font-weight: 400;
         letter-spacing: -0.085em;
         line-height: 0.78;
-        text-indent: -0.085em;
+        text-indent: 0;
         text-wrap: balance;
         animation: arrive 1.5s cubic-bezier(.2,.8,.2,1) both;
       }
@@ -148,7 +153,8 @@
 
       .intro p {
         max-width: 28rem;
-        margin: 0;
+        margin-inline: auto;
+        margin-block: 0;
         font-family: Georgia, 'Times New Roman', serif;
         font-size: clamp(2.1rem, 6vw, 5.5rem);
         font-weight: 400;
@@ -157,10 +163,10 @@
         text-wrap: balance;
       }
 
-      .show { min-height: 110svh; }
+      .show { min-height: 100svh; }
 
       .show-inner {
-        width: min(100%, 42rem);
+        width: min(100%, 34rem);
         margin-inline: auto;
       }
 
@@ -179,7 +185,7 @@
         font-weight: 400;
         line-height: 0.75;
         letter-spacing: -0.1em;
-        text-indent: -0.1em;
+        text-indent: 0;
         text-wrap: balance;
       }
 
