@@ -26,6 +26,8 @@
         --ink: #050505;
         --paper: #f4f4f2;
         --muted: rgba(0, 0, 0, 0.62);
+        --spotlight-opacity: 0;
+        --spotlight-radius: 15rem;
       }
 
       * { box-sizing: border-box; }
@@ -179,6 +181,24 @@
         text-indent: 0;
         text-wrap: balance;
         animation: arrive 1.5s cubic-bezier(.2,.8,.2,1) both;
+      }
+
+      /* The light is clipped to the lettering, keeping the rest of the page quiet. */
+      .spotlight-text {
+        --spotlight-x: 50%;
+        --spotlight-y: 50%;
+        background-color: #000;
+        background-image: radial-gradient(
+          circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y),
+          rgb(255 247 220 / var(--spotlight-opacity)) 0%,
+          rgb(244 210 138 / var(--spotlight-opacity)) 21%,
+          rgb(158 113 51 / var(--spotlight-opacity)) 48%,
+          #000 76%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
       }
 
       .hero .tagline {
@@ -336,6 +356,14 @@
         }
         .show { min-height: 100svh; }
         .show h2 { font-size: clamp(4rem, 20vw, 7rem); }
+      }
+
+      /* Touch devices get a quiet, centred pool of light. A tap or drag can still move it. */
+      @media (any-pointer: coarse) {
+        :root {
+          --spotlight-opacity: 1;
+          --spotlight-radius: 18rem;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -612,6 +640,60 @@
         { threshold: 0.5 }
       );
       document.querySelectorAll('main > section').forEach((section) => iconFieldObserver.observe(section));
+
+      const spotlightRoot = document.documentElement;
+      const spotlightText = [...document.querySelectorAll('main h1, main h2, main p, main a')];
+      spotlightText.forEach((element) => element.classList.add('spotlight-text'));
+
+      let spotlightX = window.innerWidth / 2;
+      let spotlightY = window.innerHeight / 2;
+      let spotlightFrame;
+      const renderSpotlight = () => {
+        spotlightFrame = undefined;
+        spotlightText.forEach((element) => {
+          const bounds = element.getBoundingClientRect();
+          if (bounds.bottom < 0 || bounds.top > window.innerHeight) return;
+          element.style.setProperty('--spotlight-x', `${spotlightX - bounds.left}px`);
+          element.style.setProperty('--spotlight-y', `${spotlightY - bounds.top}px`);
+        });
+      };
+      const scheduleSpotlight = () => {
+        if (!spotlightFrame) spotlightFrame = requestAnimationFrame(renderSpotlight);
+      };
+      const setSpotlight = (x, y, opacity = 1) => {
+        spotlightX = x;
+        spotlightY = y;
+        spotlightRoot.style.setProperty('--spotlight-opacity', opacity);
+        scheduleSpotlight();
+      };
+      const centreSpotlight = () => setSpotlight(window.innerWidth / 2, window.innerHeight / 2);
+      const hasFinePointer = window.matchMedia('(any-pointer: fine)').matches;
+      document.querySelector('main').addEventListener('scroll', scheduleSpotlight, { passive: true });
+      window.addEventListener('resize', scheduleSpotlight, { passive: true });
+
+      if (hasFinePointer) {
+        const followCursor = (event) => {
+          if (event.pointerType === 'mouse') setSpotlight(event.clientX, event.clientY);
+        };
+
+        window.addEventListener('pointermove', followCursor, { passive: true });
+        window.addEventListener('pointerover', followCursor, { passive: true });
+        window.addEventListener('mouseout', (event) => {
+          if (!event.relatedTarget) spotlightRoot.style.setProperty('--spotlight-opacity', 0);
+        }, { passive: true });
+        window.addEventListener('blur', () => spotlightRoot.style.setProperty('--spotlight-opacity', 0));
+      } else {
+        let settleSpotlight;
+        const moveTouchSpotlight = (event) => {
+          setSpotlight(event.clientX, event.clientY);
+          window.clearTimeout(settleSpotlight);
+          settleSpotlight = window.setTimeout(centreSpotlight, 900);
+        };
+
+        window.addEventListener('pointerdown', moveTouchSpotlight, { passive: true });
+        window.addEventListener('pointermove', moveTouchSpotlight, { passive: true });
+        centreSpotlight();
+      }
     </script>
   </body>
 </html>
