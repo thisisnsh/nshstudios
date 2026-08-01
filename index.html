@@ -185,8 +185,17 @@
 
       /* The light is clipped to the lettering, keeping the rest of the page quiet. */
       .spotlight-text {
+        position: relative;
         --spotlight-x: 50%;
         --spotlight-y: 50%;
+        color: #000;
+      }
+
+      .spotlight-text::after {
+        content: attr(data-spotlight-text);
+        position: absolute;
+        z-index: 1;
+        inset: 0;
         background-color: #000;
         background-image: radial-gradient(
           circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y),
@@ -199,6 +208,8 @@
         -webkit-background-clip: text;
         color: transparent;
         -webkit-text-fill-color: transparent;
+        pointer-events: none;
+        white-space: pre-line;
       }
 
       .hero .tagline {
@@ -643,7 +654,10 @@
 
       const spotlightRoot = document.documentElement;
       const spotlightText = [...document.querySelectorAll('main h1, main h2, main p, main a')];
-      spotlightText.forEach((element) => element.classList.add('spotlight-text'));
+      spotlightText.forEach((element) => {
+        element.classList.add('spotlight-text');
+        element.dataset.spotlightText = element.innerText;
+      });
 
       let spotlightX = window.innerWidth / 2;
       let spotlightY = window.innerHeight / 2;
