@@ -353,7 +353,9 @@
       }
 
       .instagram-link {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35em;
         margin-top: clamp(2rem, 5vw, 3.5rem);
         color: #000;
         font-size: clamp(0.68rem, 1.2vw, 0.82rem);
@@ -364,6 +366,17 @@
         border-bottom: 1px solid currentColor;
         padding-bottom: 0.35rem;
         transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      .link-arrow {
+        width: 0.9em;
+        height: 0.9em;
+        flex: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        fill: none;
+        stroke-linecap: square;
+        stroke-linejoin: miter;
       }
 
       .instagram-link:hover,
@@ -393,11 +406,6 @@
       }
 
       @media (max-width: 600px) {
-        .atmosphere {
-          background:
-            radial-gradient(ellipse 65% 24% at 50% 50%, rgba(255, 255, 255, 0.98) 0%, rgba(247, 247, 245, 0.9) 28%, rgba(230, 230, 228, 0.46) 55%, transparent 78%),
-            radial-gradient(ellipse 105% 42% at 50% 50%, rgba(225, 225, 223, 0.2), transparent 70%);
-        }
         .show { min-height: 100svh; }
         .show h2 { font-size: clamp(4rem, 20vw, 7rem); }
       }
@@ -437,7 +445,7 @@
         <div class="hero-inner">
           <h1 id="studio-name">NSH Studios</h1>
           <p class="tagline">Alive from a dream</p>
-          <a class="instagram-link hero-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram ↗</a>
+          <a class="instagram-link hero-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram <svg class="link-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7" /></svg></a>
         </div>
         <p class="swipe">Swipe up</p>
       </section>
@@ -446,7 +454,7 @@
         <div class="icon-field" data-icon="icon-star" aria-hidden="true"></div>
         <div class="story-inner">
           <p>We make the imagined feel alive.</p>
-          <a class="instagram-link intro-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram ↗</a>
+          <a class="instagram-link intro-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram <svg class="link-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7" /></svg></a>
         </div>
       </section>
 
@@ -456,7 +464,7 @@
           <p class="eyebrow">Launching Q3 2026</p>
           <h2 id="daily-thing">Daily Thing</h2>
           <p>A boy lives an ordinary life, until the small, strange moments inside every day begin to ask for his attention.</p>
-          <a class="instagram-link show-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Watch on @nshstudios on Instagram ↗</a>
+          <a class="instagram-link show-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Watch on @nshstudios on Instagram <svg class="link-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7" /></svg></a>
         </div>
       </section>
 
@@ -466,7 +474,7 @@
           <p class="eyebrow">Launching Q4 2026</p>
           <h2 id="fluffy">Fluffy</h2>
           <p>Five friends and a dog share a quiet neighbourhood—until the familiar streets begin to reveal a world that is anything but quiet.</p>
-          <a class="instagram-link show-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Watch on @nshstudios on Instagram ↗</a>
+          <a class="instagram-link show-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Watch on @nshstudios on Instagram <svg class="link-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7" /></svg></a>
         </div>
       </section>
 
@@ -476,7 +484,7 @@
           <p class="eyebrow">Launching 2027</p>
           <h2 id="love-lines">Love Lines</h2>
           <p>A love story that reaches beyond the lines science has drawn, where connection finds its own impossible path.</p>
-          <a class="instagram-link show-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Watch on @nshstudios on Instagram ↗</a>
+          <a class="instagram-link show-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Watch on @nshstudios on Instagram <svg class="link-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7" /></svg></a>
         </div>
       </section>
 
@@ -484,7 +492,7 @@
         <div class="icon-field" data-icon="icon-cloud" aria-hidden="true"></div>
         <div class="story-inner">
           <p>More dreams<br />are on their way.</p>
-          <a class="instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram ↗</a>
+          <a class="instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram <svg class="link-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7" /></svg></a>
         </div>
       </section>
     </main>
