@@ -176,15 +176,21 @@
         letter-spacing: -0.035em;
       }
 
-      .show-inner, .intro .story-inner {
-        opacity: 0.12;
-        transform: translateY(3rem);
-        transition: opacity 1.15s ease, transform 1.15s cubic-bezier(.2,.8,.2,1);
+      .hero-inner,
+      .show-inner,
+      .story-inner {
+        opacity: 0.01;
+        filter: blur(1.1rem);
+        transform: translateY(2rem) scale(0.985);
+        transition: opacity 0.85s ease, filter 0.85s ease, transform 0.95s cubic-bezier(.2,.8,.2,1);
       }
 
-      .show-inner.visible, .intro .story-inner.visible {
+      .hero-inner.visible,
+      .show-inner.visible,
+      .story-inner.visible {
         opacity: 1;
-        transform: translateY(0);
+        filter: blur(0);
+        transform: translateY(0) scale(1);
       }
 
       .closing { min-height: 100svh; }
@@ -404,11 +410,11 @@
 
       const observer = new IntersectionObserver(
         (entries) => entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('visible');
+          entry.target.classList.toggle('visible', entry.isIntersecting);
         }),
-        { threshold: 0.25 }
+        { threshold: 0.55 }
       );
-      document.querySelectorAll('.show-inner, .story-inner').forEach((element) => observer.observe(element));
+      document.querySelectorAll('.hero-inner, .show-inner, .story-inner').forEach((element) => observer.observe(element));
 
       const scenes = [...document.querySelectorAll('main > section')];
       let activeScene = 0;
