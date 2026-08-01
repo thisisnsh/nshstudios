@@ -688,25 +688,9 @@
       const finePointer = window.matchMedia('(any-pointer: fine)').matches;
 
       if (finePointer) {
-        const randomFog = (min, max) => min + Math.random() * (max - min);
-        const randomiseGlowFog = () => {
-          cursorGlow.style.setProperty('--fog-start-x', `${randomFog(-10, -2).toFixed(1)}%`);
-          cursorGlow.style.setProperty('--fog-start-y', `${randomFog(-7, 7).toFixed(1)}%`);
-          cursorGlow.style.setProperty('--fog-start-scale-x', randomFog(0.7, 0.9).toFixed(2));
-          cursorGlow.style.setProperty('--fog-start-scale-y', randomFog(0.82, 1.05).toFixed(2));
-          cursorGlow.style.setProperty('--fog-middle-x', `${randomFog(2, 10).toFixed(1)}%`);
-          cursorGlow.style.setProperty('--fog-middle-y', `${randomFog(-9, 3).toFixed(1)}%`);
-          cursorGlow.style.setProperty('--fog-middle-scale-x', randomFog(1.05, 1.24).toFixed(2));
-          cursorGlow.style.setProperty('--fog-middle-scale-y', randomFog(0.76, 1).toFixed(2));
-          cursorGlow.style.setProperty('--fog-end-x', `${randomFog(-7, 5).toFixed(1)}%`);
-          cursorGlow.style.setProperty('--fog-end-y', `${randomFog(-4, 8).toFixed(1)}%`);
-          cursorGlow.style.setProperty('--fog-end-scale-x', randomFog(0.75, 0.98).toFixed(2));
-          cursorGlow.style.setProperty('--fog-end-scale-y', randomFog(0.94, 1.17).toFixed(2));
-        };
         let glowX = 0;
         let glowY = 0;
         let glowFrame;
-        let fogCycles = 0;
         const renderGlow = () => {
           glowFrame = undefined;
           cursorGlow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0) translate3d(-50%, -50%, 0)`;
@@ -721,16 +705,10 @@
 
         window.addEventListener('pointermove', moveGlow, { passive: true });
         window.addEventListener('pointerover', moveGlow, { passive: true });
-        cursorGlow.addEventListener('animationiteration', (event) => {
-          if (event.pseudoElement !== '::before') return;
-          fogCycles += 1;
-          if (fogCycles % 2 === 0) randomiseGlowFog();
-        });
         window.addEventListener('mouseout', (event) => {
           if (!event.relatedTarget) cursorGlow.style.opacity = '0';
         }, { passive: true });
         window.addEventListener('blur', () => { cursorGlow.style.opacity = '0'; });
-        randomiseGlowFog();
       }
     </script>
   </body>
