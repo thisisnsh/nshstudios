@@ -49,7 +49,8 @@
 
       .atmosphere,
       .grain,
-      .icon-stage {
+      .icon-stage,
+      .cursor-glow {
         position: fixed;
         inset: 0;
         pointer-events: none;
@@ -78,6 +79,69 @@
       }
 
       .icon-stage { z-index: 1; }
+
+      .cursor-glow {
+        z-index: 1;
+        inset: auto;
+        top: 0;
+        left: 0;
+        width: clamp(7rem, 13vw, 12rem);
+        aspect-ratio: 1;
+        opacity: 0;
+        transform: translate3d(-50%, -50%, 0);
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.58) 0%,
+          rgba(255, 255, 255, 0.32) 20%,
+          rgba(255, 255, 255, 0.1) 47%,
+          transparent 72%
+        );
+        filter: blur(0.45rem);
+        mix-blend-mode: screen;
+        transition: opacity 0.16s ease;
+        will-change: transform, opacity;
+        --fog-start-x: -8%;
+        --fog-start-y: 5%;
+        --fog-start-scale-x: 0.76;
+        --fog-start-scale-y: 0.94;
+        --fog-middle-x: 7%;
+        --fog-middle-y: -6%;
+        --fog-middle-scale-x: 1.18;
+        --fog-middle-scale-y: 0.86;
+        --fog-end-x: -3%;
+        --fog-end-y: 3%;
+        --fog-end-scale-x: 0.82;
+        --fog-end-scale-y: 1.1;
+      }
+
+      .cursor-glow::before,
+      .cursor-glow::after {
+        content: '';
+        position: absolute;
+        inset: -12%;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .cursor-glow::before {
+        background:
+          radial-gradient(ellipse 46% 38% at 32% 55%, rgba(255, 255, 255, 0.42), transparent 72%),
+          radial-gradient(ellipse 42% 50% at 68% 42%, rgba(255, 255, 255, 0.24), transparent 74%);
+        filter: blur(0.55rem);
+        animation: cursor-fog-drift 2.4s ease-in-out infinite alternate;
+      }
+
+      .cursor-glow::after {
+        background: radial-gradient(ellipse 48% 42% at 52% 53%, rgba(255, 255, 255, 0.3), transparent 75%);
+        filter: blur(0.85rem);
+        animation: cursor-fog-drift 3.3s ease-in-out -0.9s infinite alternate-reverse;
+      }
+
+      @keyframes cursor-fog-drift {
+        0% { transform: translate3d(var(--fog-start-x), var(--fog-start-y), 0) scaleX(var(--fog-start-scale-x)) scaleY(var(--fog-start-scale-y)); opacity: 0.48; }
+        48% { transform: translate3d(var(--fog-middle-x), var(--fog-middle-y), 0) scaleX(var(--fog-middle-scale-x)) scaleY(var(--fog-middle-scale-y)); opacity: 1; }
+        100% { transform: translate3d(var(--fog-end-x), var(--fog-end-y), 0) scaleX(var(--fog-end-scale-x)) scaleY(var(--fog-end-scale-y)); opacity: 0.56; }
+      }
 
       .icon-definitions {
         position: fixed;
@@ -338,6 +402,10 @@
         .show h2 { font-size: clamp(4rem, 20vw, 7rem); }
       }
 
+      @media (any-pointer: coarse) {
+        .cursor-glow { display: none; }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         html { scroll-behavior: auto; }
         *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
@@ -349,6 +417,7 @@
       <canvas class="smoke-canvas"></canvas>
     </div>
     <div class="grain" aria-hidden="true"></div>
+    <div class="cursor-glow" aria-hidden="true"></div>
     <div class="icon-stage" aria-hidden="true"></div>
     <svg class="icon-definitions" width="0" height="0" aria-hidden="true" focusable="false">
       <defs>
@@ -614,6 +683,55 @@
         { threshold: 0.5 }
       );
       document.querySelectorAll('main > section').forEach((section) => iconFieldObserver.observe(section));
+
+      const cursorGlow = document.querySelector('.cursor-glow');
+      const finePointer = window.matchMedia('(any-pointer: fine)').matches;
+
+      if (finePointer) {
+        const randomFog = (min, max) => min + Math.random() * (max - min);
+        const randomiseGlowFog = () => {
+          cursorGlow.style.setProperty('--fog-start-x', `${randomFog(-10, -2).toFixed(1)}%`);
+          cursorGlow.style.setProperty('--fog-start-y', `${randomFog(-7, 7).toFixed(1)}%`);
+          cursorGlow.style.setProperty('--fog-start-scale-x', randomFog(0.7, 0.9).toFixed(2));
+          cursorGlow.style.setProperty('--fog-start-scale-y', randomFog(0.82, 1.05).toFixed(2));
+          cursorGlow.style.setProperty('--fog-middle-x', `${randomFog(2, 10).toFixed(1)}%`);
+          cursorGlow.style.setProperty('--fog-middle-y', `${randomFog(-9, 3).toFixed(1)}%`);
+          cursorGlow.style.setProperty('--fog-middle-scale-x', randomFog(1.05, 1.24).toFixed(2));
+          cursorGlow.style.setProperty('--fog-middle-scale-y', randomFog(0.76, 1).toFixed(2));
+          cursorGlow.style.setProperty('--fog-end-x', `${randomFog(-7, 5).toFixed(1)}%`);
+          cursorGlow.style.setProperty('--fog-end-y', `${randomFog(-4, 8).toFixed(1)}%`);
+          cursorGlow.style.setProperty('--fog-end-scale-x', randomFog(0.75, 0.98).toFixed(2));
+          cursorGlow.style.setProperty('--fog-end-scale-y', randomFog(0.94, 1.17).toFixed(2));
+        };
+        let glowX = 0;
+        let glowY = 0;
+        let glowFrame;
+        let fogCycles = 0;
+        const renderGlow = () => {
+          glowFrame = undefined;
+          cursorGlow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0) translate3d(-50%, -50%, 0)`;
+        };
+        const moveGlow = (event) => {
+          if (event.pointerType !== 'mouse') return;
+          glowX = event.clientX;
+          glowY = event.clientY;
+          cursorGlow.style.opacity = '1';
+          if (!glowFrame) glowFrame = requestAnimationFrame(renderGlow);
+        };
+
+        window.addEventListener('pointermove', moveGlow, { passive: true });
+        window.addEventListener('pointerover', moveGlow, { passive: true });
+        cursorGlow.addEventListener('animationiteration', (event) => {
+          if (event.pseudoElement !== '::before') return;
+          fogCycles += 1;
+          if (fogCycles % 2 === 0) randomiseGlowFog();
+        });
+        window.addEventListener('mouseout', (event) => {
+          if (!event.relatedTarget) cursorGlow.style.opacity = '0';
+        }, { passive: true });
+        window.addEventListener('blur', () => { cursorGlow.style.opacity = '0'; });
+        randomiseGlowFog();
+      }
     </script>
   </body>
 </html>
