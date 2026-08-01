@@ -109,11 +109,27 @@
         left: var(--icon-x);
         width: clamp(1.1rem, 2vw, 2.1rem);
         height: clamp(1.1rem, 2vw, 2.1rem);
-        color: rgba(255, 255, 255, 0.7);
-        opacity: var(--icon-opacity);
-        filter: drop-shadow(0 0 0.45rem rgba(255, 255, 255, 0.38));
-        mix-blend-mode: screen;
-        transform: translate(-50%, -50%) scale(var(--icon-scale));
+        color: rgba(0, 0, 0, 0.82);
+        opacity: var(--icon-opacity-low);
+        filter: drop-shadow(0 0 0.35rem rgba(0, 0, 0, 0.24));
+        mix-blend-mode: multiply;
+        transform: translate(-50%, -50%) scale(var(--icon-depth-far));
+        animation: icon-depth var(--icon-duration) ease-in-out var(--icon-delay) infinite alternate;
+      }
+
+      @keyframes icon-depth {
+        0% {
+          opacity: var(--icon-opacity-low);
+          transform: translate(-50%, -50%) scale(var(--icon-depth-far));
+        }
+        52% {
+          opacity: var(--icon-opacity-high);
+          transform: translate(-50%, -50%) scale(var(--icon-depth-near));
+        }
+        100% {
+          opacity: var(--icon-opacity-low);
+          transform: translate(-50%, -50%) scale(var(--icon-depth-far));
+        }
       }
 
       .hero-inner,
@@ -504,15 +520,30 @@
       const svgNamespace = 'http://www.w3.org/2000/svg';
       document.querySelectorAll('.icon-field').forEach((field) => {
         const icon = `#${field.dataset.icon}`;
-        for (let index = 0; index < 108; index += 1) {
+        const positions = [];
+        const iconCount = 42;
+        const minimumGap = 11;
+
+        while (positions.length < iconCount) {
+          let position;
+          do {
+            position = { x: Math.random() * 100, y: Math.random() * 100 };
+          } while (positions.some((existing) => Math.hypot(position.x - existing.x, position.y - existing.y) < minimumGap));
+          positions.push(position);
+
           const iconSvg = document.createElementNS(svgNamespace, 'svg');
           const iconUse = document.createElementNS(svgNamespace, 'use');
+          const depthNear = 0.76 + Math.random() * 0.58;
           iconSvg.setAttribute('class', 'field-icon');
           iconSvg.setAttribute('viewBox', '0 0 100 80');
-          iconSvg.style.setProperty('--icon-x', `${(Math.random() * 100).toFixed(2)}%`);
-          iconSvg.style.setProperty('--icon-y', `${(Math.random() * 100).toFixed(2)}%`);
-          iconSvg.style.setProperty('--icon-scale', (0.65 + Math.random() * 0.7).toFixed(2));
-          iconSvg.style.setProperty('--icon-opacity', (0.16 + Math.random() * 0.28).toFixed(2));
+          iconSvg.style.setProperty('--icon-x', `${position.x.toFixed(2)}%`);
+          iconSvg.style.setProperty('--icon-y', `${position.y.toFixed(2)}%`);
+          iconSvg.style.setProperty('--icon-depth-far', (depthNear * 0.72).toFixed(2));
+          iconSvg.style.setProperty('--icon-depth-near', depthNear.toFixed(2));
+          iconSvg.style.setProperty('--icon-opacity-low', (0.08 + Math.random() * 0.1).toFixed(2));
+          iconSvg.style.setProperty('--icon-opacity-high', (0.24 + Math.random() * 0.2).toFixed(2));
+          iconSvg.style.setProperty('--icon-duration', `${(10 + Math.random() * 9).toFixed(1)}s`);
+          iconSvg.style.setProperty('--icon-delay', `-${(Math.random() * 12).toFixed(1)}s`);
           iconUse.setAttribute('href', icon);
           iconUse.setAttribute('width', '100');
           iconUse.setAttribute('height', '80');
