@@ -94,42 +94,27 @@
 
       .hero { position: relative; }
 
-      .icon-vignette {
+      .icon-field {
         position: absolute;
         z-index: 0;
         inset: 0;
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(9, 1fr);
+        place-items: center;
+        padding: clamp(1rem, 3vw, 3rem);
         pointer-events: none;
+        mask-image: radial-gradient(ellipse 37% 34% at 50% 50%, transparent 0 52%, rgba(0, 0, 0, 0.28) 68%, #000 88%);
+        -webkit-mask-image: radial-gradient(ellipse 37% 34% at 50% 50%, transparent 0 52%, rgba(0, 0, 0, 0.28) 68%, #000 88%);
       }
 
-      .vignette-icon {
-        position: absolute;
-        width: clamp(1.25rem, 2.25vw, 2.25rem);
-        height: clamp(1.25rem, 2.25vw, 2.25rem);
+      .field-icon {
+        width: clamp(1.1rem, 2vw, 2.1rem);
+        height: clamp(1.1rem, 2vw, 2.1rem);
         color: rgba(255, 255, 255, 0.7);
-        opacity: 0.28;
-        filter: drop-shadow(0 0 0.55rem rgba(255, 255, 255, 0.38));
+        opacity: 0.34;
+        filter: drop-shadow(0 0 0.45rem rgba(255, 255, 255, 0.38));
         mix-blend-mode: screen;
-        animation: glass-shimmer 7s ease-in-out infinite alternate;
-      }
-
-      .vignette-icon:nth-child(1) { top: 6%; left: 29%; transform: rotate(-18deg); }
-      .vignette-icon:nth-child(2) { top: 3%; left: 47%; width: clamp(1rem, 1.75vw, 1.75rem); height: clamp(1rem, 1.75vw, 1.75rem); transform: rotate(12deg); animation-delay: -2s; }
-      .vignette-icon:nth-child(3) { top: 7%; left: 65%; transform: rotate(25deg); animation-delay: -5s; }
-      .vignette-icon:nth-child(4) { top: 19%; left: 13%; width: clamp(1rem, 1.65vw, 1.65rem); height: clamp(1rem, 1.65vw, 1.65rem); transform: rotate(-29deg); animation-delay: -1s; }
-      .vignette-icon:nth-child(5) { top: 37%; left: 4%; transform: rotate(14deg); animation-delay: -4s; }
-      .vignette-icon:nth-child(6) { top: 57%; left: 8%; width: clamp(1rem, 1.8vw, 1.8rem); height: clamp(1rem, 1.8vw, 1.8rem); transform: rotate(-15deg); animation-delay: -3s; }
-      .vignette-icon:nth-child(7) { top: 76%; left: 15%; transform: rotate(21deg); animation-delay: -6s; }
-      .vignette-icon:nth-child(8) { top: 91%; left: 31%; width: clamp(1rem, 1.7vw, 1.7rem); height: clamp(1rem, 1.7vw, 1.7rem); transform: rotate(-9deg); animation-delay: -2s; }
-      .vignette-icon:nth-child(9) { top: 94%; left: 49%; transform: rotate(18deg); animation-delay: -5s; }
-      .vignette-icon:nth-child(10) { top: 90%; left: 66%; width: clamp(1rem, 1.8vw, 1.8rem); height: clamp(1rem, 1.8vw, 1.8rem); transform: rotate(-24deg); animation-delay: -1s; }
-      .vignette-icon:nth-child(11) { top: 77%; left: 83%; transform: rotate(13deg); animation-delay: -4s; }
-      .vignette-icon:nth-child(12) { top: 58%; left: 91%; width: clamp(1rem, 1.7vw, 1.7rem); height: clamp(1rem, 1.7vw, 1.7rem); transform: rotate(-16deg); animation-delay: -6s; }
-      .vignette-icon:nth-child(13) { top: 37%; left: 94%; transform: rotate(22deg); animation-delay: -3s; }
-      .vignette-icon:nth-child(14) { top: 18%; left: 85%; width: clamp(1rem, 1.8vw, 1.8rem); height: clamp(1rem, 1.8vw, 1.8rem); transform: rotate(-12deg); animation-delay: -5s; }
-
-      @keyframes glass-shimmer {
-        from { opacity: 0.16; filter: drop-shadow(0 0 0.35rem rgba(255, 255, 255, 0.18)); }
-        to { opacity: 0.42; filter: drop-shadow(0 0 0.8rem rgba(255, 255, 255, 0.54)); }
       }
 
       .hero-inner,
@@ -335,9 +320,7 @@
 
     <main>
       <section class="hero" aria-labelledby="studio-name">
-        <div class="icon-vignette" aria-hidden="true">
-          <svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg><svg class="vignette-icon"><use href="#icon-clapboard" /></svg>
-        </div>
+        <div class="icon-field" data-icon="icon-clapboard" aria-hidden="true"></div>
         <div class="hero-inner">
           <h1 id="studio-name">NSH Studios</h1>
           <p class="tagline">Alive from a dream</p>
@@ -347,9 +330,7 @@
       </section>
 
       <section class="intro">
-        <div class="icon-vignette" aria-hidden="true">
-          <svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg><svg class="vignette-icon"><use href="#icon-zzz" /></svg>
-        </div>
+        <div class="icon-field" data-icon="icon-zzz" aria-hidden="true"></div>
         <div class="story-inner">
           <p>We make the imagined feel alive.</p>
           <a class="instagram-link intro-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram ↗</a>
@@ -357,9 +338,7 @@
       </section>
 
       <section class="show" aria-labelledby="daily-thing">
-        <div class="icon-vignette" aria-hidden="true">
-          <svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg><svg class="vignette-icon"><use href="#icon-car" /></svg>
-        </div>
+        <div class="icon-field" data-icon="icon-car" aria-hidden="true"></div>
         <div class="show-inner">
           <p class="eyebrow">Launching Q3 2026</p>
           <h2 id="daily-thing">Daily Thing</h2>
@@ -369,9 +348,7 @@
       </section>
 
       <section class="show" aria-labelledby="fluffy">
-        <div class="icon-vignette" aria-hidden="true">
-          <svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg><svg class="vignette-icon"><use href="#icon-dog" /></svg>
-        </div>
+        <div class="icon-field" data-icon="icon-dog" aria-hidden="true"></div>
         <div class="show-inner">
           <p class="eyebrow">Launching Q4 2026</p>
           <h2 id="fluffy">Fluffy</h2>
@@ -381,9 +358,7 @@
       </section>
 
       <section class="show" aria-labelledby="love-lines">
-        <div class="icon-vignette" aria-hidden="true">
-          <svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg><svg class="vignette-icon"><use href="#icon-heart" /></svg>
-        </div>
+        <div class="icon-field" data-icon="icon-heart" aria-hidden="true"></div>
         <div class="show-inner">
           <p class="eyebrow">Launching 2027</p>
           <h2 id="love-lines">Love Lines</h2>
@@ -393,9 +368,7 @@
       </section>
 
       <section class="closing">
-        <div class="icon-vignette" aria-hidden="true">
-          <svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg><svg class="vignette-icon"><use href="#icon-cloud" /></svg>
-        </div>
+        <div class="icon-field" data-icon="icon-cloud" aria-hidden="true"></div>
         <div class="story-inner">
           <p>More dreams<br />are on their way.</p>
           <a class="instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram ↗</a>
@@ -528,6 +501,22 @@
           }
         }
       }
+
+      const svgNamespace = 'http://www.w3.org/2000/svg';
+      document.querySelectorAll('.icon-field').forEach((field) => {
+        const icon = `#${field.dataset.icon}`;
+        for (let index = 0; index < 108; index += 1) {
+          const iconSvg = document.createElementNS(svgNamespace, 'svg');
+          const iconUse = document.createElementNS(svgNamespace, 'use');
+          iconSvg.setAttribute('class', 'field-icon');
+          iconSvg.setAttribute('viewBox', '0 0 100 80');
+          iconUse.setAttribute('href', icon);
+          iconUse.setAttribute('width', '100');
+          iconUse.setAttribute('height', '80');
+          iconSvg.append(iconUse);
+          field.append(iconSvg);
+        }
+      });
 
       const observer = new IntersectionObserver(
         (entries) => entries.forEach((entry) => {
