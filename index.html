@@ -88,15 +88,53 @@
         align-content: center;
         scroll-snap-align: start;
         scroll-snap-stop: always;
+        position: relative;
+        isolation: isolate;
       }
 
       .hero { position: relative; }
+
+      .fog-item {
+        position: absolute;
+        z-index: 0;
+        top: 50%;
+        left: 50%;
+        width: clamp(9rem, 22vw, 20rem);
+        height: auto;
+        overflow: visible;
+        color: rgba(255, 255, 255, 0.88);
+        opacity: 0.42;
+        filter: blur(0.7px) drop-shadow(0 0 1.8rem rgba(255, 255, 255, 0.52));
+        mix-blend-mode: screen;
+        transform-origin: center;
+        animation: symbol-drift 9s ease-in-out infinite alternate;
+      }
+
+      .fog-item--words {
+        width: clamp(8rem, 18vw, 16rem);
+        animation-duration: 7s;
+      }
+
+      .fog-item--heart { width: clamp(8rem, 16vw, 15rem); animation-duration: 11s; }
+      .fog-item--cloud { width: clamp(11rem, 25vw, 23rem); animation-duration: 13s; }
+
+      .fog-item .outline {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .fog-item .solid { fill: currentColor; }
 
       .hero-inner,
       .story-inner {
         width: min(100%, 54rem);
         margin-inline: auto;
         text-align: center;
+        position: relative;
+        z-index: 1;
       }
 
       .hero h1 {
@@ -123,6 +161,7 @@
 
       .swipe {
         position: absolute;
+        z-index: 1;
         bottom: clamp(1.5rem, 4vw, 3rem);
         left: 50%;
         margin: 0;
@@ -158,6 +197,8 @@
         width: min(100%, 34rem);
         margin-inline: auto;
         text-align: center;
+        position: relative;
+        z-index: 1;
       }
 
       .eyebrow {
@@ -256,6 +297,11 @@
         50% { transform: translate(-50%, -0.6rem); opacity: 1; }
       }
 
+      @keyframes symbol-drift {
+        from { transform: translate(-50%, -50%) scale(0.94) rotate(-2deg); opacity: 0.28; }
+        to { transform: translate(-50%, -54%) scale(1.06) rotate(2deg); opacity: 0.5; }
+      }
+
       @media (max-width: 600px) {
         .atmosphere {
           background:
@@ -280,6 +326,12 @@
 
     <main>
       <section class="hero" aria-labelledby="studio-name">
+        <svg class="fog-item" viewBox="0 0 240 190" aria-hidden="true">
+          <g class="outline">
+            <path d="M31 63h178v100H31zM31 63l24-35h178l-24 35zM31 99h178" />
+            <path d="M77 28 53 63M126 28l-24 35M175 28l-24 35" />
+          </g>
+        </svg>
         <div class="hero-inner">
           <h1 id="studio-name">NSH Studios</h1>
           <p class="tagline">Alive from a dream</p>
@@ -289,6 +341,9 @@
       </section>
 
       <section class="intro">
+        <svg class="fog-item fog-item--words" viewBox="0 0 260 150" aria-hidden="true">
+          <text class="solid" x="18" y="108" font-family="Arial, sans-serif" font-size="104" font-weight="700" letter-spacing="-12">zzz</text>
+        </svg>
         <div class="story-inner">
           <p>We make the imagined feel alive.</p>
           <a class="instagram-link intro-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram ↗</a>
@@ -296,6 +351,13 @@
       </section>
 
       <section class="show" aria-labelledby="daily-thing">
+        <svg class="fog-item" viewBox="0 0 240 170" aria-hidden="true">
+          <g class="outline">
+            <path d="M31 119h17l19-46h91l28 46h23v25H31z" />
+            <path d="M67 73h91M86 73l-13 46M153 73l21 46" />
+            <circle cx="76" cy="145" r="17" /><circle cx="169" cy="145" r="17" />
+          </g>
+        </svg>
         <div class="show-inner">
           <p class="eyebrow">Launching Q3 2026</p>
           <h2 id="daily-thing">Daily Thing</h2>
@@ -305,6 +367,13 @@
       </section>
 
       <section class="show" aria-labelledby="fluffy">
+        <svg class="fog-item" viewBox="0 0 240 190" aria-hidden="true">
+          <g class="outline">
+            <path d="M64 136c0-33 25-55 61-55 33 0 51 18 51 45v24H64z" />
+            <path d="M84 83 70 48l35 24M147 80l25-31 3 40M176 115l36-20 5 19-37 20" />
+            <path d="M83 150v23M153 150v23M104 109h1M142 109h1M115 130c7 6 15 6 22 0" />
+          </g>
+        </svg>
         <div class="show-inner">
           <p class="eyebrow">Launching Q4 2026</p>
           <h2 id="fluffy">Fluffy</h2>
@@ -314,6 +383,9 @@
       </section>
 
       <section class="show" aria-labelledby="love-lines">
+        <svg class="fog-item fog-item--heart" viewBox="0 0 220 200" aria-hidden="true">
+          <path class="solid" d="M110 176 29 99C-4 68 8 17 51 17c25 0 45 15 59 37 14-22 34-37 59-37 43 0 55 51 22 82z" />
+        </svg>
         <div class="show-inner">
           <p class="eyebrow">Launching 2027</p>
           <h2 id="love-lines">Love Lines</h2>
@@ -323,6 +395,9 @@
       </section>
 
       <section class="closing">
+        <svg class="fog-item fog-item--cloud" viewBox="0 0 270 180" aria-hidden="true">
+          <path class="outline" d="M51 142h164c27 0 45-17 45-39 0-25-20-44-48-40-10-31-39-50-72-43-25 5-43 22-50 44-25-8-53 8-57 35-4 24 15 43 18 43z" />
+        </svg>
         <div class="story-inner">
           <p>More dreams<br />are on their way.</p>
           <a class="instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram ↗</a>
