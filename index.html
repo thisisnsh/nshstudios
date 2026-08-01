@@ -397,8 +397,8 @@
             float centre = exp(-dot(centreOffset, centreOffset) * 2.15);
             float centreTexture = fbm(point * vec2(2.4, 3.1) + current * 2.8 + vec2(drift * 0.7, -drift * 0.25));
             float centreFog = centre * (0.42 + smoothstep(0.23, 0.78, centreTexture) * 0.58);
-            float opacity = smoke * 0.035 + centreFog * 0.76;
-            vec3 colour = vec3(0.72 + smoke * 0.28);
+            float opacity = smoke * 0.035 + centreFog * 0.9;
+            vec3 colour = mix(vec3(0.7 + smoke * 0.22), vec3(1.0), centreFog * 0.48);
             gl_FragColor = vec4(colour, opacity);
           }
         `;
