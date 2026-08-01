@@ -411,7 +411,7 @@
     <script>
       const smokeCanvas = document.querySelector('.smoke-canvas');
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const gl = smokeCanvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
+      const gl = smokeCanvas.getContext('webgl', { alpha: true, premultipliedAlpha: true });
 
       if (gl) {
         const vertexSource = `
@@ -476,8 +476,10 @@
             float centreTexture = fbm(point * vec2(2.4, 3.1) + current * 2.8 + vec2(drift * 0.7, -drift * 0.25));
             float centreFog = centre * (0.42 + smoothstep(0.23, 0.78, centreTexture) * 0.58);
             float opacity = smoke * 0.035 + centreFog * 0.9;
+            // Keep the soft Chrome falloff while using portable premultiplied output.
+            float visualAlpha = opacity * opacity * opacity;
             vec3 colour = mix(vec3(0.7 + smoke * 0.22), vec3(1.0), centreFog * 0.48);
-            gl_FragColor = vec4(colour, opacity);
+            gl_FragColor = vec4(colour * visualAlpha, visualAlpha);
           }
         `;
 
@@ -508,8 +510,6 @@
             const time = gl.getUniformLocation(program, 'time');
             gl.enableVertexAttribArray(position);
             gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
-            gl.enable(gl.BLEND);
-            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
             const resize = () => {
               const scale = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -518,11 +518,14 @@
               gl.viewport(0, 0, smokeCanvas.width, smokeCanvas.height);
             };
 
+            let animationStart;
             const render = (now) => {
+              if (animationStart === undefined) animationStart = now;
+              const elapsed = (now - animationStart) * 0.001;
               gl.clearColor(0, 0, 0, 0);
               gl.clear(gl.COLOR_BUFFER_BIT);
               gl.uniform2f(resolution, smokeCanvas.width, smokeCanvas.height);
-              gl.uniform1f(time, now * 0.001);
+              gl.uniform1f(time, elapsed);
               gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
               if (!reduceMotion) requestAnimationFrame(render);
             };
