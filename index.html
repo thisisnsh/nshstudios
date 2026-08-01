@@ -42,9 +42,7 @@
       .atmosphere {
         z-index: 0;
         overflow: hidden;
-        background:
-          radial-gradient(ellipse 24% 19% at 50% 50%, rgba(255, 255, 255, 0.94) 0%, rgba(238, 238, 235, 0.56) 38%, transparent 77%),
-          radial-gradient(ellipse 62% 48% at 50% 50%, rgba(180, 182, 182, 0.11), transparent 72%);
+        background: #000;
       }
 
       .smoke-canvas {
@@ -335,10 +333,9 @@
             ));
             float smoke = smoothstep(0.53, 0.84, body * 0.68 + tendril * 0.62);
 
-            vec2 centreOffset = point - vec2(-0.08, 0.02);
-            float centre = exp(-dot(centreOffset, centreOffset) * 1.35);
-            float edge = 1.0 - smoothstep(0.58, 1.45, length(point));
-            float opacity = smoke * (0.12 + centre * 0.72) * edge;
+            vec2 centreOffset = (point - vec2(-0.04, 0.02)) * vec2(0.94, 1.18);
+            float centre = exp(-dot(centreOffset, centreOffset) * 2.15);
+            float opacity = smoke * (0.025 + centre * 0.9);
             vec3 colour = vec3(0.72 + smoke * 0.28);
             gl_FragColor = vec4(colour, opacity);
           }
