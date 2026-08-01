@@ -82,7 +82,7 @@
       section {
         height: 100svh;
         min-height: 100svh;
-        padding: clamp(1.5rem, 5vw, 5rem);
+        padding: 0 clamp(1.5rem, 5vw, 5rem);
         display: grid;
         place-items: center;
         align-content: center;
@@ -118,21 +118,21 @@
         filter: drop-shadow(0 0 0.35rem rgba(0, 0, 0, 0.24));
         mix-blend-mode: multiply;
         transform: translate(-50%, -50%) scale(var(--icon-depth-far));
-        animation: icon-depth var(--icon-duration) ease-in-out var(--icon-delay) infinite alternate;
+        animation: icon-drift var(--icon-duration) ease-in-out var(--icon-delay) infinite alternate;
       }
 
-      @keyframes icon-depth {
+      @keyframes icon-drift {
         0% {
           opacity: var(--icon-opacity-low);
-          transform: translate(-50%, -50%) scale(var(--icon-depth-far));
+          transform: translate(-50%, -50%) translate(var(--icon-shift-start-x), var(--icon-shift-start-y)) scale(var(--icon-depth-far));
         }
         52% {
           opacity: var(--icon-opacity-high);
-          transform: translate(-50%, -50%) scale(var(--icon-depth-near));
+          transform: translate(-50%, -50%) translate(var(--icon-shift-end-x), var(--icon-shift-end-y)) scale(var(--icon-depth-near));
         }
         100% {
           opacity: var(--icon-opacity-low);
-          transform: translate(-50%, -50%) scale(var(--icon-depth-far));
+          transform: translate(-50%, -50%) translate(var(--icon-shift-start-x), var(--icon-shift-start-y)) scale(var(--icon-depth-far));
         }
       }
 
@@ -329,9 +329,10 @@
     <svg width="0" height="0" aria-hidden="true" focusable="false">
       <defs>
         <symbol id="icon-clapboard" viewBox="0 0 100 80"><path fill="currentColor" d="M8 25h84v49H8zm0-4L19 4h84L92 21zM27 4 17 21h12L39 4zm29 0L46 21h12L68 4zm29 0L75 21h12L97 4z" /></symbol>
-        <symbol id="icon-zzz" viewBox="0 0 100 80"><text x="5" y="58" fill="currentColor" font-family="Arial, sans-serif" font-size="54" font-weight="700" letter-spacing="-7">zzz</text></symbol>
+        <symbol id="icon-star" viewBox="0 0 100 80"><path fill="currentColor" d="m50 4 10 27 29 1-23 18 8 28-24-16-24 16 8-28L11 32l29-1z" /></symbol>
         <symbol id="icon-car" viewBox="0 0 100 80"><path fill="currentColor" d="M7 50h10l10-25h42l15 25h9v17H7zm24-20-7 20h51L63 30z" /><circle cx="28" cy="66" r="10" fill="currentColor" /><circle cx="74" cy="66" r="10" fill="currentColor" /></symbol>
         <symbol id="icon-dog" viewBox="0 0 100 80"><path fill="currentColor" d="M7 47 1 35l7-5 12 12h11V30l8-18 10 17 14-5 6 14c10 2 18 8 22 17l9 4-4 8-13-5H73l2 14H64l-3-14H45l-3 14H31V62H19v14H8V59c-6-3-7-8-1-12z" /></symbol>
+        <symbol id="icon-football" viewBox="0 0 100 80"><path fill="currentColor" fill-rule="evenodd" d="M50 3a37 37 0 1 1 0 74 37 37 0 0 1 0-74zm0 24L62 36l-4 15H42l-4-15z" /></symbol>
         <symbol id="icon-heart" viewBox="0 0 100 80"><path fill="currentColor" d="M50 72 12 36C-4 21 2 1 22 1c12 0 22 8 28 18C56 9 66 1 78 1c20 0 26 20 10 35z" /></symbol>
         <symbol id="icon-cloud" viewBox="0 0 100 80"><path fill="currentColor" d="M18 66h63c11 0 19-7 19-17 0-11-9-19-20-17C76 19 65 11 51 13 39 15 31 23 28 33 16 30 4 38 3 50c-2 9 5 16 15 16z" /></symbol>
       </defs>
@@ -349,7 +350,7 @@
       </section>
 
       <section class="intro">
-        <div class="icon-field" data-icon="icon-zzz" aria-hidden="true"></div>
+        <div class="icon-field" data-icon="icon-star" aria-hidden="true"></div>
         <div class="story-inner">
           <p>We make the imagined feel alive.</p>
           <a class="instagram-link intro-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Follow @nshstudios on Instagram ↗</a>
@@ -367,7 +368,7 @@
       </section>
 
       <section class="show" aria-labelledby="fluffy">
-        <div class="icon-field" data-icon="icon-dog" aria-hidden="true"></div>
+        <div class="icon-field" data-icon="icon-football" aria-hidden="true"></div>
         <div class="show-inner">
           <p class="eyebrow">Launching Q4 2026</p>
           <h2 id="fluffy">Fluffy</h2>
@@ -531,7 +532,7 @@
         while (positions.length < iconCount) {
           let position;
           do {
-            position = { x: Math.random() * 100, y: Math.random() * 100 };
+            position = { x: 5 + Math.random() * 90, y: 5 + Math.random() * 90 };
           } while (positions.some((existing) => Math.hypot(position.x - existing.x, position.y - existing.y) < minimumGap));
           positions.push(position);
 
@@ -548,6 +549,10 @@
           iconSvg.style.setProperty('--icon-opacity-high', (0.24 + Math.random() * 0.2).toFixed(2));
           iconSvg.style.setProperty('--icon-duration', `${(10 + Math.random() * 9).toFixed(1)}s`);
           iconSvg.style.setProperty('--icon-delay', `-${(Math.random() * 12).toFixed(1)}s`);
+          iconSvg.style.setProperty('--icon-shift-start-x', `${(-1.2 + Math.random() * 2.4).toFixed(2)}vw`);
+          iconSvg.style.setProperty('--icon-shift-start-y', `${(-1 + Math.random() * 2).toFixed(2)}vh`);
+          iconSvg.style.setProperty('--icon-shift-end-x', `${(-1.2 + Math.random() * 2.4).toFixed(2)}vw`);
+          iconSvg.style.setProperty('--icon-shift-end-y', `${(-1 + Math.random() * 2).toFixed(2)}vh`);
           iconUse.setAttribute('href', icon);
           iconUse.setAttribute('width', '100');
           iconUse.setAttribute('height', '80');
