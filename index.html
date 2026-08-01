@@ -406,8 +406,31 @@
       }
 
       @media (max-width: 600px) {
+        section {
+          padding-inline: 1rem;
+        }
+
+        .hero-inner,
+        .show-inner,
+        .story-inner {
+          width: 100%;
+        }
+
+        .hero h1 {
+          font-size: clamp(5rem, 24vw, 8rem);
+        }
+
+        .show h2 {
+          width: 80%;
+          margin-inline: auto;
+          font-size: clamp(5.5rem, 30vw, 11rem);
+        }
+
+        .show h2 .mobile-title-line {
+          display: block;
+        }
+
         .show { min-height: 100svh; }
-        .show h2 { font-size: clamp(4rem, 20vw, 7rem); }
       }
 
       @media (any-pointer: coarse) {
@@ -462,7 +485,7 @@
         <div class="icon-field" data-icon="icon-car" aria-hidden="true"></div>
         <div class="show-inner">
           <p class="eyebrow">Launching Q3 2026</p>
-          <h2 id="daily-thing">Daily Thing</h2>
+          <h2 id="daily-thing">Daily <span class="mobile-title-line">Thing</span></h2>
           <p>A boy lives an ordinary life, until the small, strange moments inside every day begin to ask for his attention.</p>
           <a class="instagram-link show-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Watch on @nshstudios on Instagram <svg class="link-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7" /></svg></a>
         </div>
@@ -482,7 +505,7 @@
         <div class="icon-field" data-icon="icon-heart" aria-hidden="true"></div>
         <div class="show-inner">
           <p class="eyebrow">Launching 2027</p>
-          <h2 id="love-lines">Love Lines</h2>
+          <h2 id="love-lines">Love <span class="mobile-title-line">Lines</span></h2>
           <p>A love story that reaches beyond the lines science has drawn, where connection finds its own impossible path.</p>
           <a class="instagram-link show-instagram-link" href="https://www.instagram.com/nshstudios/" target="_blank" rel="noopener noreferrer">Watch on @nshstudios on Instagram <svg class="link-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7" /></svg></a>
         </div>
